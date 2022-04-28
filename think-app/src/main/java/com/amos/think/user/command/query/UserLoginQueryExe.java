@@ -25,12 +25,13 @@ public class UserLoginQueryExe {
     public void execute(UserLoginQuery query) {
         UserEntity userEntity = userGateway.findPasswordInfo(query.getUsername());
         if (Objects.isNull(userEntity)) {
-            throw new BizException(ErrorCode.B_USER_PASSWORD_ERROR);
+            throw new BizException(ErrorCode.B_USER_UNDEFINED);
         }
 
         // 校验密码是否正确
         if (!userEntity.getPassword().isCorrect(query.getPassword())) {
             throw new BizException(ErrorCode.B_USER_PASSWORD_ERROR);
+//            throw new RuntimeException("密码错误");
         }
     }
 

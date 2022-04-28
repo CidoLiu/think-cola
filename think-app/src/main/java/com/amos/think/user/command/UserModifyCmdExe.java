@@ -24,8 +24,8 @@ public class UserModifyCmdExe {
     private UserGateway userGateway;
 
     public UserVO execute(UserModifyCmd cmd) {
-        // check 用户名是否重复
-        if (userGateway.checkByUsername(cmd.getId(), cmd.getUsername())) {
+        // check 用户名是否重复，用户名相同且ID不同，则不能修改
+        if (Boolean.TRUE.equals(userGateway.checkByUsername(cmd.getId(), cmd.getUsername()))) {
             throw new BizException(ErrorCode.B_USER_USERNAME_REPEAT);
         }
 

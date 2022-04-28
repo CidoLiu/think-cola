@@ -25,7 +25,7 @@ public class UserRegisterCmdExe {
 
     public UserVO execute(UserRegisterCmd cmd) {
         // check 用户名是否重复
-        if (userGateway.checkByUsername(null, cmd.getUsername())) {
+        if (Boolean.TRUE.equals(userGateway.checkByUsername(null, cmd.getUsername()))) {
             throw new BizException(ErrorCode.B_USER_USERNAME_REPEAT);
         }
 

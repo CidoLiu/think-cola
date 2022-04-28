@@ -1,6 +1,5 @@
 package com.amos.think.service;
 
-import com.alibaba.cola.catchlog.CatchAndLog;
 import com.alibaba.cola.dto.MultiResponse;
 import com.alibaba.cola.dto.SingleResponse;
 import com.amos.think.api.IUserService;
@@ -14,6 +13,7 @@ import com.amos.think.user.command.UserRegisterCmdExe;
 import com.amos.think.user.command.query.UserInfoQueryExe;
 import com.amos.think.user.command.query.UserListByParamQueryExe;
 import com.amos.think.user.command.query.UserLoginQueryExe;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,7 +25,7 @@ import javax.annotation.Resource;
  * @date 2021/1/8
  */
 @Service
-@CatchAndLog
+@Slf4j
 public class UserServiceImpl implements IUserService {
 
     /**
@@ -44,16 +44,19 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserVO register(UserRegisterCmd cmd) {
+        log.info("User register with cmd: {}", cmd);
         return userRegisterCmdExe.execute(cmd);
     }
 
     @Override
     public UserVO modify(UserModifyCmd cmd) {
+        log.info("User modify with cmd: {}", cmd);
         return userModifyCmdExe.execute(cmd);
     }
 
     @Override
     public void login(UserLoginQuery query) {
+        log.info("User login with query: {}", query);
         userLoginQueryExe.execute(query);
     }
 
