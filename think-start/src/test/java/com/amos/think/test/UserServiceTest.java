@@ -23,7 +23,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * UserServiceTest
@@ -37,12 +36,11 @@ import java.util.UUID;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserServiceTest {
 
-    @Autowired
-    private IUserService userService;
-
-    private static final String username = "AMOS_" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+    private static final String username = "test_username";
     private static final String password = "666666";
     private static Long id = null;
+    @Autowired
+    private IUserService userService;
 
     @Before
     public void setUp() {
@@ -50,7 +48,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void user_1_Register() {
+    public void Register() {
         //1.prepare
         UserRegisterCmd registerCmd = new UserRegisterCmd(username, password);
         registerCmd.setName("amos.wang");
@@ -69,7 +67,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void user_2_RegisterByRepeatUsername() {
+    public void RegisterByRepeatUsername() {
         //1.prepare
         UserRegisterCmd registerCmd = new UserRegisterCmd(username, password);
 
@@ -82,7 +80,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void user_3_Login() {
+    public void Login() {
         //1.prepare
         UserLoginQuery userLoginQuery = new UserLoginQuery();
         userLoginQuery.setUsername(username);
@@ -93,9 +91,9 @@ public class UserServiceTest {
     }
 
     @Test
-    public void user_4_Modify() {
+    public void Modify() {
         //1.prepare
-        UserModifyCmd userModify = new UserModifyCmd(id, username);
+        UserModifyCmd userModify = new UserModifyCmd(7L, username);
         userModify.setName("小道远");
         userModify.setPhoneNo("189****8888");
         userModify.setGender(0);
@@ -110,7 +108,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void user_5_listByName() {
+    public void ListByName() {
         //1.prepare
         UserListByParamQuery query = UserListByParamQuery.builder().build();
 
@@ -121,6 +119,17 @@ public class UserServiceTest {
 
         //3.assert error
         Assert.assertTrue(response.isSuccess());
+    }
+
+    @Test(expected = BizException.class)
+    public void LoginWithWrongPassword() {
+        //1.prepare
+        UserLoginQuery userLoginQuery = new UserLoginQuery();
+        userLoginQuery.setUsername(username);
+        userLoginQuery.setPassword("password");
+
+        //2.execute
+        userService.login(userLoginQuery);
     }
 
 }
